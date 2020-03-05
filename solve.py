@@ -78,7 +78,7 @@ class Solver:
             print('{:5d} | {:{width}d} | {:{width}d} | {:.4%}'.format(*row, width = width))
 
     def __print_debug_table(self):
-        width = self.__get_column_width()
+        width = self.__get_column_width() - 1   # Extra 1 padding unnecessary for any debug table that'll actually fit on the screen
         print '-------------------- Debug Table --------------------'
         print 'Flips | ',
         for col_label in range(self.min_value, self.max_value + 1):
@@ -87,7 +87,10 @@ class Solver:
         for row_num, row in enumerate(self.data_table):
             print '{:5d} | '.format(row_num),
             for item in row:
-                print '{:{width}d}'.format(item, width = width),
+                if item is not 0:
+                    print '{:{width}d}'.format(item, width = width),
+                else:
+                    print ''.rjust(width),
             print
         print '\n'
 

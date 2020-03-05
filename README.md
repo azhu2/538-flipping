@@ -7,7 +7,7 @@ A quick solution to a [fivethirtyeight Riddler puzzle](https://fivethirtyeight.c
 `./solve.py 100 -o results.csv`
 
 ## Solution
-Results for 100 coin flips (as specified in the problem) are included in the repo. The winrate after 100 flips is **64.0317%**.
+The winrate after 100 flips is **64.0317%**.
 
 ## Approach
 To figure out the strategy, approach the problem in reverse. It's evident that after the 99th flip, if your total is greater than 2, you're guaranteed to win whichever coin you pick. If your total is 2, pick coin A to guarantee a win. Likewise, if your total is less than -1, you're guaranteed to lose regardless of the last coin flipped. If your total is exactly -1, picking coin B gives a 50% chance at a win and coin A guarantees a loss. Totals of 0 or 1 give a 50% chance of a win regardless of coin choice. That gives us:
@@ -52,6 +52,22 @@ Interesting. So there's a point to this after all. If we draw out the tree of po
 
 We noticed earlier that only the running total affects the result, not how we got there. As such, we don't need to keep track of every permutation, just frequency of each running total. We can visualize as:
 
-[insert diagram]
+[TODO: insert diagram]
 
 That looks like a distorted Pascal's triangle. Unfortunately, unlike how every element can be calculated by combinatorics without having to fill in the rest of the triangle, no real patterns seem to show up aside from along the extreme edges. Oh, and this structure translates directly to a memoization structure!
+
+## Results
+Results for every flip up to 100 are included in the repo.
+
+[TODO: insert chart]
+
+The results appear to slowly converge around &#8532;. Curiously, they oscillate a bit - each odd-numbered flip has a slightly worse winrate than its previous even-numbered flip.
+
+[TODO: math workup]
+
+Remember that earlier, we we're entirely sure what to do with a running total of 0 or 1, as coin choice didn't seem to matter? We can tweak our script now and see that, in fact, it doesn't matter at all which coin we choose in those cases; the results come out the same.
+
+So the actual optimal strategy is:
+
+> If our running total is 2 or greater, pick coin A. If negative, pick coin B. If 0 or 1, pick whatever  
+> (maybe flip a coin to choose which coin to fip. But then which coin do we flip to determine that???)

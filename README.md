@@ -53,20 +53,20 @@ Interesting. So there's a point to this after all. If we draw out the tree of po
 We noticed earlier that only the running total affects the result, not how we got there. As such, we don't need to keep track of every permutation, just frequency of each running total. We can visualize as:
 
 ```
-                                                                                      Ending Value
-Flips |  -20 -19 -18 -17 -16 -15 -14 -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2   3   4   5   6   7   8   9  10  11
-    0 |                                                                                    1
-    1 |                                                                            1   0   0   0   1
-    2 |                                                                    1   0   0   0   1   1   0   1
-    3 |                                                            1   0   0   0   2   0   1   0   3   0   1
-    4 |                                                    1   0   0   0   3   0   1   0   2   3   1   4   0   1
-    5 |                                            1   0   0   0   4   0   1   0   5   0   4   1   9   1   5   0   1
-    6 |                                    1   0   0   0   5   0   1   0   9   0   5   0   6   9   6  14   1   6   0   1
-    7 |                            1   0   0   0   6   0   1   0  14   0   6   0  15   0  14   6  29   7  20   1   7   0   1
-    8 |                    1   0   0   0   7   0   1   0  20   0   7   0  29   0  20   0  21  29  27  49   8  27   1   8   0   1
-    9 |            1   0   0   0   8   0   1   0  27   0   8   0  49   0  27   0  50   0  49  27  99  35  76   9  35   1   9   0   1
-   10 |    1   0   0   0   9   0   1   0  35   0   9   0  76   0  35   0  99   0  76   0  77  99 111 175  44 111  10  44   1  10   0   1
+                                                                             Ending Value
+Flips |  -18 -17 -16 -15 -14 -13 -12 -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1   0   1   2   3   4   5   6   7   8   9  10
+    0 |                                                                            1
+    1 |                                                                    1               1
+    2 |                                                            1               1   1       1
+    3 |                                                    1               2       1       3       1
+    4 |                                            1               3       1       2   3   1   4       1
+    5 |                                    1               4       1       5       4   1   9   1   5       1
+    6 |                            1               5       1       9       5       6   9   6  14   1   6       1
+    7 |                    1               6       1      14       6      15      14   6  29   7  20   1   7       1
+    8 |            1               7       1      20       7      29      20      21  29  27  49   8  27   1   8       1
+    9 |    1               8       1      27       8      49      27      50      49  27  99  35  76   9  35   1   9       1
 ```
+(run the script with the `--debug` flag to get a similar table)
 
 That looks like a distorted Pascal's triangle. Unfortunately, unlike how every element can be calculated by combinatorics without having to fill in the rest of the triangle, no real patterns seem to show up aside from along the extreme edges. Oh, and this structure translates directly to a memoization structure!
 
@@ -79,7 +79,7 @@ The results appear to slowly converge around &#8532;. Curiously, they oscillate 
 
 [TODO: math workup]
 
-Remember that earlier, we we're entirely sure what to do with a running total of 0 or 1, as coin choice didn't seem to matter? We can tweak our script now and see that, in fact, it doesn't matter at all which coin we choose in those cases; the results come out the same.
+Remember that earlier, we weren't entirely sure what to do with a running total of 0 or 1, as coin choice didn't seem to matter? We can tweak our script now and see that, in fact, it doesn't matter at all which coin we choose in those cases; the results come out the same.
 
 So the actual optimal strategy is:
 

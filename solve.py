@@ -5,18 +5,19 @@ import argparse
 
 class Solver:
     def __init__(self, iterations):
-        self.row_count = int(iterations) + 1
-        self.min_value = -2 * self.row_count
-        self.max_value = self.row_count + 1
+        iters = int(iterations)
+        self.row_count = iters + 1
+        self.min_value = -2 * iters
+        self.max_value = iters + 1
 
     def solve(self):
         # Init empty table of Nones
-        self.data_table = [[None for _ in range(self.max_value - self.min_value + 1)] for _ in range(self.row_count + 1)]
+        self.data_table = [[None for _ in range(self.max_value - self.min_value + 1)] for _ in range(self.row_count)]
         # Seed value for starting at 0
         self.data_table[0][self.__getIndexForValue(0)] = 1
 
         for value in range(self.min_value, self.max_value + 1):
-            self.__getOrCalculateValue(self.row_count, value)
+            self.__getOrCalculateValue(self.row_count - 1, value)
 
         self.results_table = []
         for row in range(self.row_count):
@@ -70,25 +71,29 @@ class Solver:
         if debug:
             self.__print_debug_table()
 
-        # Variable width columns; log(2)(10) = 3.01, so this should be enough for any number of iterations we can handle
-        width = int(self.row_count / 3) + 1
+        width = self.__get_column_width()
         print '-------------------- Results --------------------'
         print('{:>5} | {:>{width}} | {:>{width}} | {}'.format('Flips', 'Wins', 'Permutations', 'Win Ratio', width = width))
         for row in self.results_table:
             print('{:5d} | {:{width}d} | {:{width}d} | {:.4%}'.format(*row, width = width))
 
     def __print_debug_table(self):
+        width = self.__get_column_width()
         print '-------------------- Debug Table --------------------'
         print 'Flips | ',
         for col_label in range(self.min_value, self.max_value + 1):
-            print '{:4d}'.format(col_label),
+            print '{:{width}d}'.format(col_label, width = width),
         print
         for row_num, row in enumerate(self.data_table):
             print '{:5d} | '.format(row_num),
             for item in row:
-                print '{:4d}'.format(item),
+                print '{:{width}d}'.format(item, width = width),
             print
         print '\n'
+
+    def __get_column_width(self):
+        # log(2)(10) = 3.01, so this should be enough for any number of iterations we can handle
+        return int(self.row_count / 3) + 1
 
 def main(iterations, output_file, debug):
     solver = Solver(iterations)

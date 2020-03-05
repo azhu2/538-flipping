@@ -1,13 +1,22 @@
-# 538-flipping
+# Can You Flip Your Way To Victory?
 
-A quick solution to a [fivethirtyeight Riddler puzzle](https://fivethirtyeight.com/features/can-you-flip-your-way-to-victory/). Working through the problem by hand didn't seem to get anything concrete so why not make a computer do the dirty work?
+A solution to a [fivethirtyeight Riddler puzzle](https://fivethirtyeight.com/features/can-you-flip-your-way-to-victory/). Working through the problem by hand didn't seem to get anything concrete so why not make a computer do the dirty work?
 
-## Usage
-`./solve.py 10`
-`./solve.py 100 -o results.csv`
+## Problem
+>copied from [fivethirtyeight](https://fivethirtyeight.com/features/can-you-flip-your-way-to-victory/)
+
+You have two fair coins, labeled A and B. When you flip coin A, you get 1 point if it comes up heads, but you lose 1 point if it comes up tails. Coin B is worth twice as much — when you flip coin B, you get 2 points if it comes up heads, but you lose 2 points if it comes up tails.
+
+To play the game, you make a total of 100 flips. For each flip, you can choose either coin, and you know the outcomes of all the previous flips. In order to win, you must finish with a positive total score. In your eyes, finishing with 2 points is just as good as finishing with 200 points — any positive score is a win. (By the same token, finishing with 0 or −2 points is just as bad as finishing with −200 points.)
+
+If you optimize your strategy, what percentage of games will you win? (Remember, one game consists of 100 coin flips.)
 
 ## Solution
 The winrate after 100 flips is **64.0317%**.
+
+## Usage
+`./solve.py 10`  
+`./solve.py 100 -o results.csv`
 
 ## Approach
 To figure out the strategy, approach the problem in reverse. It's evident that after the 99th flip, if your total is greater than 2, you're guaranteed to win whichever coin you pick. If your total is 2, pick coin A to guarantee a win. Likewise, if your total is less than -1, you're guaranteed to lose regardless of the last coin flipped. If your total is exactly -1, picking coin B gives a 50% chance at a win and coin A guarantees a loss. Totals of 0 or 1 give a 50% chance of a win regardless of coin choice. That gives us:
